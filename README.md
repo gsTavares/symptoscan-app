@@ -1,5 +1,5 @@
 
-# HealthIO APP
+# myHealth.io APP
 
 Mobile application developed for my graduation work.
 
