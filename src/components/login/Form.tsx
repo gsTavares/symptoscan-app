@@ -1,13 +1,27 @@
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, TextInput, Pressable, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Logo from "../../../assets/logo_tg_app.svg";
+import { useNavigation } from "@react-navigation/native";
+import { useContext, useState } from "react";
+import { Pressable, Text, View } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import colors from "tailwindcss/colors";
-import { Input } from "./Input";
+import Logo from "../../../assets/logo_tg_app.svg";
+import { AuthErrorDTO, LoginDTO } from "../../routes/util/auth";
+import { AuthContext } from "../../routes/util/auth.context";
 
 export const Form = () => {
 
     const navigation = useNavigation();
+    const { login } = useContext(AuthContext);
+    const [data, setData] = useState<LoginDTO>({} as LoginDTO);
+    const [message, setMessage] = useState<string>("");
+
+    const handleLogin = async () => {
+        const rs = await login(data);
+        if (rs.status === 401) {
+            const error = rs as AuthErrorDTO;
+            setMessage(error.message);
+        }
+    }
 
     return (
         <View className="items-center justify-center mt-[10vh]">
@@ -17,22 +31,44 @@ export const Form = () => {
             </View>
 
             <View className="w-full px-6">
-                <Input label="e-mail"
-                    keyboardType="email-address"
-                    placeholder="example@email.com"
-                    cursorColor={colors.slate[500]}
-                    secureTextEntry={false} />
+                <View className="mt-3">
+                    <Text className="text-lg font-semibold text-slate-600">E-MAIL</Text>
+                    <TextInput className="bg-slate-100 border border-slate-400 rounded-md h-10 px-3 focus:border-blue-500 text-slate-800 font-regular"
+                        keyboardType="email-address"
+                        cursorColor={colors.slate[500]}
+                        placeholder="example@email.com"
+                        secureTextEntry
+                        value={data.email}
+                        onChangeText={(value) => {
+                            setData((prevState) => ({
+                                ...prevState,
+                                email: value
+                            }));
+                        }} />
+                </View>
 
-                <Input label="password"
-                    keyboardType="default"
-                    secureTextEntry={true}
-                    cursorColor={colors.slate[500]}
-                    placeholder="ex. 123" />
+                <View className="mt-3">
+                    <Text className="text-lg font-semibold text-slate-600">PASSWORD</Text>
+                    <TextInput className="bg-slate-100 border border-slate-400 rounded-md h-10 px-3 focus:border-blue-500 text-slate-800 font-regular"
+                        keyboardType="default"
+                        cursorColor={colors.slate[500]}
+                        placeholder="ex. 123"
+                        secureTextEntry
+                        value={data.password}
+                        onChangeText={(value) => {
+                            setData((prevState) => ({
+                                ...prevState,
+                                password: value
+                            }));
+                        }} />
+                </View>
 
                 <View className="mt-10">
-                    <Pressable className="bg-green-500 rounded-md px-5 h-12 flex-row justify-between items-center">
+                    <Pressable className="bg-green-500 rounded-md px-5 h-12 flex-row justify-between items-center"
+                        onPress={handleLogin}
+                    >
                         <Text className="text-white font-semibold">LOGIN</Text>
-                        <Ionicons name="log-in-outline" color={colors.white} size={32} />
+                        <Ionicons name="log-in-outline" color={"white"} size={32} />
                     </Pressable>
 
                     <View className="mt-5 flex-row justify-center">
@@ -46,6 +82,10 @@ export const Form = () => {
 
                     <View className="items-center">
                         <Text>All rights reserved - 2023</Text>
+                    </View>
+
+                    <View className="mt-2">
+                        <Text className="font-semibold text-center text-red-400">{message}</Text>
                     </View>
                 </View>
             </View>
