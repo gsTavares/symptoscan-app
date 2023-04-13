@@ -7,9 +7,9 @@ interface Enviroment {
 }
 
 const LOCAL_ENV: Enviroment = {
-    host: "http://192.168.0.107:",
-    port: "8081",
-    path: "/health-io"
+    host: "HOST",
+    port: "PORT",
+    path: "PATH"
 }
 
 const API_ENV: Enviroment = LOCAL_ENV;
