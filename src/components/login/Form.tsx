@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { MotiView } from "moti";
 import { useContext, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import colors from "tailwindcss/colors";
 import Logo from "../../../assets/logo_tg_app.svg";
@@ -26,14 +27,21 @@ export const Form = () => {
     return (
         <View className="items-center justify-center mt-[10vh]">
             <View className="items-center">
-                <Text className="font-bold text-3xl text-slate-700 mb-3">PROJECT_NAME</Text>
-                <Logo />
+                <MotiView from={{opacity: 0}} animate={{opacity: 1}} transition={{type: "timing", duration: 500}}>
+                    <Text className="font-bold text-3xl text-slate-700 mb-3">PROJECT_NAME</Text>
+                    <Text className="font-bold text-xl text-slate-700 mb-3 text-center">SUBTITLE</Text>
+                </MotiView>
+                <MotiView from={{scale: 0}} animate={{scale: 1}} transition={{type: "spring", damping: 50}} delay={800}>
+                    <Logo />
+                </MotiView>
             </View>
 
-            <View className="w-full px-6">
+            <MotiView from={{paddingTop: 500}}
+                      animate={{paddingTop: 0}}
+                      transition={{type: "timing", duration: 800}} delay={1000} className="w-full px-6">
                 <View className="mt-3">
                     <Text className="text-lg font-semibold text-slate-600">E-MAIL</Text>
-                    <TextInput className="bg-slate-100 border border-slate-400 rounded-md h-10 px-3 focus:border-blue-500 text-slate-800 font-regular"
+                    <TextInput className="bg-white border-2 border-slate-400 rounded-md h-12 px-3 focus:border-blue-500 text-slate-800 font-regular"
                         keyboardType="email-address"
                         cursorColor={colors.slate[500]}
                         placeholder="example@email.com"
@@ -49,7 +57,7 @@ export const Form = () => {
 
                 <View className="mt-3">
                     <Text className="text-lg font-semibold text-slate-600">PASSWORD</Text>
-                    <TextInput className="bg-slate-100 border border-slate-400 rounded-md h-10 px-3 focus:border-blue-500 text-slate-800 font-regular"
+                    <TextInput className="bg-white border-2 border-slate-400 rounded-md h-12 px-3 focus:border-blue-500 text-slate-800 font-regular"
                         keyboardType="default"
                         cursorColor={colors.slate[500]}
                         placeholder="ex. 123"
@@ -64,12 +72,12 @@ export const Form = () => {
                 </View>
 
                 <View className="mt-10">
-                    <Pressable className="bg-green-500 rounded-md px-5 h-12 flex-row justify-between items-center"
-                        onPress={handleLogin}
+                    <TouchableOpacity activeOpacity={0.8} className="bg-green-500 rounded-md px-5 h-12 flex-row justify-between items-center"
+                        onPressOut={handleLogin}
                     >
                         <Text className="text-white font-semibold">LOGIN</Text>
                         <Ionicons name="log-in-outline" color={"white"} size={32} />
-                    </Pressable>
+                    </TouchableOpacity>
 
                     <View className="mt-5 flex-row justify-center">
                         <Text className="font-regular">Do not have an account? </Text>
@@ -88,7 +96,7 @@ export const Form = () => {
                         <Text className="font-semibold text-center text-red-400">{message}</Text>
                     </View>
                 </View>
-            </View>
+            </MotiView>
         </View>
     )
 }
