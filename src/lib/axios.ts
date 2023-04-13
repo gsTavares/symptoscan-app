@@ -7,7 +7,7 @@ interface Enviroment {
 }
 
 const LOCAL_ENV: Enviroment = {
-    host: "192.168.0.107:",
+    host: "http://192.168.0.107:",
     port: "8081",
     path: "/health-io"
 }
@@ -18,4 +18,4 @@ export const API = axios.create({
     baseURL: `${API_ENV.host}${API_ENV.port}${API_ENV.path}`
 })
 
-export {AxiosError} from "axios";
+export { AxiosError } from "axios";

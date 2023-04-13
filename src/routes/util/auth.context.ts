@@ -1,8 +1,8 @@
 import { createContext } from "react";
-import { LoginDTO, RegisterDTO } from "./auth";
+import { AuthErrorDTO, AuthSuccessDTO, LoginDTO, RegisterDTO } from "./auth";
 
 export interface AuthMethods {
-    login: (data: LoginDTO) => Promise<void>,
+    login: (data: LoginDTO) => Promise<AuthSuccessDTO | AuthErrorDTO>,
     logout: () => void,
     register: (data: RegisterDTO) => Promise<void>
 }

@@ -1,15 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import { View, Text, Pressable } from "react-native";
+import { ScrollView } from "react-native";
+import { Form } from "../components/login/Form";
 
 export const Login = () => {
-    const navigation = useNavigation();
 
     return (
-        <View className="flex-1 items-center justify-center">
-            <Text>Login</Text>
-            <Pressable onPress={() => navigation.navigate("register")} >
-                <Text className="font-semibold">Go to register</Text>
-            </Pressable>
-        </View>
+        <ScrollView className="bg-slate-200 h-full"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ marginTop: 70 }}>
+            <Form />
+        </ScrollView>
     )
 }

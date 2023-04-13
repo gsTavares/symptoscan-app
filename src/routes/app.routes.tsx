@@ -1,14 +1,13 @@
-import { useEffect, useMemo, useReducer } from "react";
-import { View } from "react-native";
-import { get, store } from "../lib/secure.storage";
-import { AuthContext, AuthMethods } from "./util/auth.context";
-import { AuthErrorDTO, AuthSuccessDTO, LoginDTO, RegisterDTO } from "./util/auth";
-import { API, AxiosError } from "../lib/axios";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useEffect, useMemo, useReducer } from "react";
+import { API, AxiosError } from "../lib/axios";
+import { get, remove, store } from "../lib/secure.storage";
+import { Index } from "../screens/Index";
 import { Login } from "../screens/Login";
 import { Register } from "../screens/Register";
-import { NavigationContainer } from "@react-navigation/native";
-import { Index } from "../screens/Index";
+import { AuthErrorDTO, AuthSuccessDTO, LoginDTO, RegisterDTO } from "./util/auth";
+import { AuthContext, AuthMethods } from "./util/auth.context";
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -45,7 +44,7 @@ export const Routes = () => {
             }
 
             if (userToken) {
-                API.get("/patient/validate-token", {
+                API.get("/person/validate-token", {
                     headers: {
                         authorization: userToken
                     }
@@ -63,18 +62,21 @@ export const Routes = () => {
 
     const authContext = useMemo<AuthMethods>(() => ({
         login: async (data: LoginDTO) => {
-            API.post("/login", data).then(response => {
+            return API.post("/login", data).then(response => {
                 store("accessToken", response.headers.authorization);
-                return response.data as AuthSuccessDTO;
+                return response.data! as AuthSuccessDTO;
             }).then(successAuth => {
                 store("refreshToken", successAuth.refreshToken);
+                dispatch({ type: "LOGIN", token: get("accessToken") });
+                return successAuth;
             }).catch((error: AxiosError) => {
                 const errorBody = error.response!.data as AuthErrorDTO;
-                console.log(errorBody.message);
+                return errorBody;
             });
-            dispatch({ type: "LOGIN", token: await get("accessToken") });
         },
-        logout: () => {
+        logout: async () => {
+            remove("accessToken");
+            remove("refreshToken");
             dispatch({ type: "LOGOUT" })
         },
         register: async (data: RegisterDTO) => {

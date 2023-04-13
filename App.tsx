@@ -19,7 +19,7 @@ export default function App() {
   return (
     <>
       <Routes />
-      <StatusBar style="light" translucent />
+      <StatusBar style="light" translucent hidden />
     </>
   );
 }
