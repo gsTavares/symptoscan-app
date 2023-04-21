@@ -45,7 +45,7 @@ export const Form = () => {
                         keyboardType="email-address"
                         cursorColor={colors.slate[500]}
                         placeholder="example@email.com"
-                        secureTextEntry
+                        secureTextEntry={false}
                         value={data.email}
                         onChangeText={(value) => {
                             setData((prevState) => ({
