@@ -1,5 +1,5 @@
 
-# myHealth.io APP
+# symptoscan-app
 
 Mobile application developed for my graduation work.
 
@@ -13,6 +13,7 @@ presented by the patient
 ## Autors
 
 - [@gsTavares](https://www.github.com/gsTavares)
+- [@mateusscarin](https://github.com/mateusscarin)
 
 
 ## Stack
